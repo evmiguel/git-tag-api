@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "npx cypress run"
   },
   "dependencies": {
     "@octokit/rest": "^20.0.1",
