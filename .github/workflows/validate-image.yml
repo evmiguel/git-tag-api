@@ -24,8 +24,11 @@ jobs:
           docker build -t tag-api-image .
           docker run -d -p 3000:3000 tag-api-image
           
-      - name: Curl endpoint and stop container
+      - name: Run tests
         run: |
           sleep 5
-          curl http://localhost:3000/tag/8.1.0
+          npx cypress run
+
+      - name: Stop docker container
+        run: |
           docker stop $(docker ps -q)
