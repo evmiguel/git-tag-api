@@ -23,7 +23,10 @@ jobs:
 
           docker build -t tag-api-image .
           docker run -d -p 3000:3000 tag-api-image
-          
+
+      - name: Install dependencies for Cypress
+        run: npm install --only=dev
+
       - name: Run tests
         run: |
           sleep 5
