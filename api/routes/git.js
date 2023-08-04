@@ -1,7 +1,8 @@
 const { Router } = require('express');
+const { getCreationDateByReleaseTag } = require('../controllers/GitController');
 
 const router = Router();
 
-router.get('/', (req, res) => res.send({'message': 'hi'}))
+router.get('/:tag', getCreationDateByReleaseTag)
 
 module.exports = router;

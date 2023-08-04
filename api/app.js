@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 
 // Routes
-const gitRoute = require('./routes/git');
-app.use('/tag', gitRoute);
+const gitRoutes = require('./routes/git');
+app.use('/tag', gitRoutes);
 
 module.exports = { app };
