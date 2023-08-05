@@ -2,7 +2,6 @@
 
 const { getCreationDateByReleaseTag } = require('../../api/controllers/GitController');
 const { Octokit } = require('@octokit/rest');
-const axios = require('axios');
 
 // Mock the Octokit and axios modules to prevent actual API requests
 jest.mock('@octokit/rest');
