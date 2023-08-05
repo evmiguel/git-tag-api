@@ -21,7 +21,7 @@ jobs:
         run: |
           aws s3 cp s3://evmiguel-config/.env ./.env
 
-          docker build -t tag-api-image .
+          docker build -t tag-api-image ./api
           docker run -d -p 3000:3000 tag-api-image
 
       - name: Install dependencies for Cypress
@@ -30,7 +30,7 @@ jobs:
       - name: Run tests
         run: |
           sleep 5
-          npx cypress run
+          npm run test
 
       - name: Stop docker container
         run: |
