@@ -1,0 +1,154 @@
+
+- name: Ensure Docker is installed
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Check if Docker is installed
+      stat:
+        path: /usr/bin/docker
+      register: docker_installeds
+
+    - name: Install required packages for Docker
+      package:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+        state: present
+      when: ansible_pkg_mgr == "apt"
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+      when: ansible_pkg_mgr == "apt"
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+      when: ansible_pkg_mgr == "apt"
+
+    - name: Install Docker on Ubuntu
+      package:
+        name: docker-ce
+        state: present
+      when: ansible_pkg_mgr == "apt"
+    
+    - name: Install the required Python library for Docker
+      pip:
+        name: docker
+        state: present
+        executable: pip3
+      when: ansible_pkg_mgr == "apt"
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+    
+- name: Build Docker Images
+  hosts: localhost
+  connection: local
+  become: true
+
+  tasks:
+    - name: Build Docker API Image
+      docker_image:
+        name: git-tag-api:0.0.1
+        build:
+          path: ../../api
+          pull: no
+        source: build
+        state: present
+
+    - name: Create temporary directory to save Docker API image tarball
+      tempfile:
+        state: directory
+      register: tempdir
+
+    - name: Save Docker API Image as a Tarball
+      shell: docker save -o {{ tempdir.path }}/git-tag-api-0.0.1.tar git-tag-api:0.0.1
+
+    - name: Copy Docker API image tarball to destination directory
+      copy:
+        src: "{{ tempdir.path }}/git-tag-api-0.0.1.tar"
+        dest: /tmp/git-tag-api-0.0.1.tar
+        remote_src: yes
+    
+    - name: Build Docker APP Image
+      docker_image:
+        name: git-tag-app:0.0.1
+        build:
+          path: ../../app
+          pull: no
+        source: build
+        state: present
+
+    - name: Create temporary directory to save Docker app image tarball
+      tempfile:
+        state: directory
+      register: tempdir
+
+    - name: Save Docker app Image as a Tarball
+      shell: docker save -o {{ tempdir.path }}/git-tag-app-0.0.1.tar git-tag-app:0.0.1
+
+    - name: Copy Docker image tarball to destination directory
+      copy:
+        src: "{{ tempdir.path }}/git-tag-app-0.0.1.tar"
+        dest: /tmp/git-tag-app-0.0.1.tar
+        remote_src: yes
+
+- name: Deploy Docker Image
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Create Docker network
+      docker_network:
+        name: tag_network
+
+    - name: Copy Docker API Image Tarball to Target Hosts
+      copy:
+        src: /tmp/git-tag-api-0.0.1.tar
+        dest: /tmp/git-tag-api-0.0.1.tar
+
+    - name: Load Docker API Image on Target Hosts
+      shell: docker load -i /tmp/git-tag-api-0.0.1.tar
+      become_user: root
+
+    - name: Start Docker API Container
+      docker_container:
+        name: git-tag-api-container
+        image: git-tag-api:0.0.1
+        state: started
+        ports:
+          - "3000:3000"
+        networks:
+          - name: tag_network
+            aliases:
+              - git-tag-api-container
+
+    - name: Copy Docker App Image Tarball to Target Hosts
+      copy:
+        src: /tmp/git-tag-app-0.0.1.tar
+        dest: /tmp/git-tag-app-0.0.1.tar
+
+    - name: Load Docker App Image on Target Hosts
+      shell: docker load -i /tmp/git-tag-app-0.0.1.tar
+      become_user: root
+
+    - name: Start Docker App Container
+      docker_container:
+        name: git-tag-app-container
+        image: git-tag-app:0.0.1
+        state: started
+        ports:
+          - "80:80"
+        networks:
+          - name: tag_network
+

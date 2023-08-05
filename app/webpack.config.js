@@ -25,5 +25,11 @@ module.exports = {
   devServer: {
     static: './dist',
     port: 4000,
+    proxy: [
+      {
+          context: ['/tag'],
+          target: 'http://localhost:3000'
+      }
+    ]
   },
 };
