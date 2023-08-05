@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "node index.js",
-    "test": "npx cypress run; npx jest run tests/unit/**/*.test.js"
+    "test": "npx cypress run; npx jest run tests/unit"
   },
   "dependencies": {
     "dotenv": "^16.3.1",
