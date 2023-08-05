@@ -17,6 +17,9 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Build frontend
         run: npm run --workspace=app build
 
@@ -28,9 +31,6 @@ jobs:
           docker run -d -p 3000:3000 tag-api-image
           docker build -t git-tag-app ./app
           docker run -d -p 8080:80 git-tag-app
-
-      - name: Install dependencies for Cypress
-        run: npm install
 
       - name: Run tests
         run: |

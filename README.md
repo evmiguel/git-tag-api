@@ -2,6 +2,7 @@
 This repo is an API endpoint for getting the creation date of a git tag.
 
 # Dev environment
+ - cd into `api` folder
  - Run `npm start` to have the endpoint running on `localhost:3000`
  - Copy `.env.sample` into `.env` and past your API key into the config file.
 
