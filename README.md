@@ -1,13 +1,14 @@
 # git-tag-api
 This repo is an API endpoint for getting the creation date of a git tag.
 
-# Dev environment
- - cd into `api` folder
- - Run `npm start` to have the endpoint running on `localhost:3000`
+# Dev environment (non-Dockerized)
  - Copy `.env.sample` into `.env` and past your API key into the config file.
+ - Run `npm run --workspace=api start` in one terminal
+    - The endpoint will be running on `localhost:3000/tag/:tagId`
+ - Run `npm run --workspace=app start` in another terminal to start the webapp
 
 # API Endpoint
- - Send a GET request to `localhost:3000/tag/:tagId`
+ - Send a GET request to `/tag/:tagId`
 
 # Build
 This repo uses Github Actions to run the build and test the containerized environment.

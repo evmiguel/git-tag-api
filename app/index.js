@@ -10,7 +10,7 @@ const App = () => {
   };
 
   const getCreationDate = async (tag) => {
-    const response = await fetch(`http://localhost:3000/tag/${tag}`);
+    const response = await fetch(`/tag/${tag}`);
     if (response.status >= 400) {
       setCreationDate('Tag does not exist');
     } else {
