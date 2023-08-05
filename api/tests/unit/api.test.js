@@ -1,6 +1,6 @@
 // getCreationDateByReleaseTag.test.js
 
-const { getCreationDateByReleaseTag } = require('../../api/controllers/GitController');
+const { getCreationDateByReleaseTag } = require('../../controllers/GitController');
 const { Octokit } = require('@octokit/rest');
 
 // Mock the Octokit and axios modules to prevent actual API requests
