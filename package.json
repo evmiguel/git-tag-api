@@ -1,7 +1,7 @@
 {
     "main": "api/index.js",
     "scripts": {
-        "test": "npm run --workspace=api test",
+        "test": "npm run --workspace=api test; npm run --workspace=app test",
         "api": "npm run --workspace=api start"
     },
     "private": true,

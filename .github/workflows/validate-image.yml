@@ -17,12 +17,17 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
+      - name: Build frontend
+        run: npm run --workspace=app build
+
       - name: Build and run Docker container
         run: |
           aws s3 cp s3://evmiguel-config/.env ./.env
 
           docker build -t tag-api-image ./api
           docker run -d -p 3000:3000 tag-api-image
+          docker build -t git-tag-app ./app
+          docker run -d -p 8080:80 git-tag-app
 
       - name: Install dependencies for Cypress
         run: npm install
