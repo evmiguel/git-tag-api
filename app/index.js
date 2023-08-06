@@ -9,6 +9,12 @@ const App = () => {
     setTag(event.target.value);
   };
 
+  const handleKeyPress = async (event) => {
+    if (event.key === 'Enter') {
+      await getCreationDate(tag);
+    }      
+  }
+
   const getCreationDate = async (tag) => {
     const response = await fetch(`/tag/${tag}`);
     if (response.status >= 400) {
@@ -25,6 +31,7 @@ const App = () => {
         placeholder='Search for a tag in the blockapps/strato-getting-started repo' 
         value={tag}
         onChange={handleInputChange}
+        onKeyDown={handleKeyPress}
       />
       <button onClick={() => getCreationDate(tag)}>Get Tag Creation Date</button>
       <h2>Creation date: {creationDate}</h2>
