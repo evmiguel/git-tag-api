@@ -57,6 +57,9 @@
   become: true
 
   tasks:
+    - name: Build production dist
+      command: npm --workspace=app run build
+
     - name: Build Docker API Image
       docker_image:
         name: git-tag-api:0.0.1
@@ -108,6 +111,14 @@
   become: true
 
   tasks:
+    - name: Stop all running containers
+      shell: sudo docker stop $(sudo docker ps -q)
+      become: root
+
+    - name: Remove all images
+      shell: sudo docker rmi -f $(sudo docker images -a -q)
+      become: root
+
     - name: Create Docker network
       docker_network:
         name: tag_network
