@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 3.0"
     }
+    godaddy = {
+      source = "n3integration/godaddy"
+      version = "1.9.1"
+    }
   }
 }
  
@@ -16,5 +20,16 @@ resource "aws_instance" "tag_api_instance" {
   instance_type = "t2.small"
   tags = {
     "Name" = "git-tag-app"
+  }
+}
+
+resource "godaddy_domain_record" "tag_domain" {
+  domain   = "erikamiguel.com"
+
+  record {
+    name = "tag"
+    type = "A"
+    data = "44.204.233.103"
+    ttl = 3600
   }
 }
