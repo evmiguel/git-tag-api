@@ -1,5 +1,6 @@
 # git-tag-api
 This repo is an API endpoint for getting the creation date of a git tag.
+Visit http://tag.erikamiguel.com to try out the application.
 
 # Dev environment (non-Dockerized)
  - Copy `.env.sample` into `.env` and past your API key into the config file.
@@ -22,5 +23,6 @@ with resources also in GoDaddy.
 - Run `ansible-playbook -i hosts.yml provision.yml --ask-become-pass`
 
 # Not implemented
+ - Fancy UI and mobile screen.
  - Advanced authentication. This solution only uses the personal access token.
  - Github Environments. There is one config file for all environments at the moment.
