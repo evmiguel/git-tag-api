@@ -8,6 +8,7 @@ const Button = styled.button`
   border: 2px solid #008CBA;
   border-radius: 3px;
   padding: 10px;
+  cursor: pointer
 `;
 
 const Input = styled.input`
