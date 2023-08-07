@@ -9,6 +9,7 @@ Visit https://tag.erikamiguel.com to try out the application.
  - Run `npm run --workspace=api start` in one terminal
     - The endpoint will be running on `http://localhost:3000/tag/:tagId`
  - Run `npm run --workspace=app start` in another terminal to start the webapp
+    - The local webapp will be on `http://localhost:4000` 
 
 # API Endpoint
  - Send a GET request to `https://tag.erikamiguel.com/tag/:tagId`
@@ -18,15 +19,18 @@ This repo uses Github Actions to run the build and test the containerized enviro
 It pulls the configuration from an s3 bucket during the build phase. 
 
 # Infrastructure
-The infrastructure for this app is hosted on my personal AWS account
-with resources also in GoDaddy.
+ - The infrastructure for this app is hosted on my personal AWS account
+   with resources also in GoDaddy.
 
-# Deployment
-- Go into the ansible folder: `cd infrastructure/ansible`
-- Run `ansible-playbook -i hosts.yml provision.yml --ask-become-pass`
+ - Unless you are the owner of this repo, you will not have access to
+   the necessary keys and secrets required to run Terraform and Ansible. 
+
+ - ## Deployment
+   - Go into the ansible folder: `cd infrastructure/ansible`
+   - Run `ansible-playbook -i hosts.yml provision.yml --ask-become-pass`
 
 # Not implemented
- - HTTPS
  - Fancy UI and mobile screen.
+ - Modifiable owner and repo in API. This API is strictly for browsing the https://github.com/blockapps/strato-getting-started repo
  - Advanced authentication. This solution only uses the personal access token.
  - Github Environments. There is one config file for all environments at the moment.
