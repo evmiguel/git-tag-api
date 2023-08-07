@@ -6,6 +6,8 @@ Visit https://tag.erikamiguel.com to try out the application.
 
 # Dev environment (non-Dockerized)
  - Copy `.env.sample` into `.env` and past your API key into the config file.
+   You can generate an access token in https://github.com/settings/tokens, under Fine-grained tokens
+ - Install each workspace dependencies by running `npm install`
  - Run `npm run --workspace=api start` in one terminal
     - The endpoint will be running on `http://localhost:3000/tag/:tagId`
  - Run `npm run --workspace=app start` in another terminal to start the webapp
