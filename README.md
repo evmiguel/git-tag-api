@@ -1,5 +1,7 @@
 # git-tag-api
 This repo is an API endpoint for getting the creation date of a git tag.
+The API utilizes the GitHub API to find the creation date by looking
+for the tag and getting the date associated with the author.
 Visit https://tag.erikamiguel.com to try out the application.
 
 # Dev environment (non-Dockerized)
