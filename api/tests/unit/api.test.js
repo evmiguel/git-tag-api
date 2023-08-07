@@ -3,11 +3,17 @@
 const { getCreationDateByReleaseTag } = require('../../controllers/GitController');
 const { Octokit } = require('@octokit/rest');
 
-// Mock the Octokit and axios modules to prevent actual API requests
-jest.mock('@octokit/rest');
+// Mock the Octokit to prevent actual API requests
+jest.mock('@octokit/rest', () => {
+  return {
+    Octokit: jest.fn(() => ({
+      request: jest.fn(),
+    })),
+  };
+});
 
 describe('getCreationDateByReleaseTag', () => {
-  const mockResponseData = { created_at: '2023-08-04T12:34:56Z' };
+  const mockResponseData = { data: { object: { url: 'mock-url' } } };
   const mockRequestParams = { tag: 'v1.0.0' };
 
   beforeEach(() => {
@@ -16,8 +22,14 @@ describe('getCreationDateByReleaseTag', () => {
   });
 
   it('should return the correct created_at date for a valid tag', async () => {
-    // Mock the API response
-    const mockRequest = jest.fn().mockResolvedValue({ data: mockResponseData });
+    const mockRequest = jest.fn().mockImplementation((route, options) => {
+      if (route === 'GET /repos/{owner}/{repo}/git/ref/tags/{tag}') {
+        return Promise.resolve(mockResponseData);
+      } else {
+        return Promise.resolve({ data: { author: { date: '2022-09-14T21:44:59Z' } } });
+      }
+    });
+
     Octokit.mockImplementation(() => ({
       request: mockRequest,
     }));
@@ -32,7 +44,7 @@ describe('getCreationDateByReleaseTag', () => {
     await getCreationDateByReleaseTag(req, res);
 
     // Verify the function's behavior
-    expect(res.send).toHaveBeenCalledWith({ created_at: mockResponseData.created_at });
+    expect(res.send).toHaveBeenCalledWith({ created_at: '2022-09-14T21:44:59Z' });
     expect(res.sendStatus).not.toHaveBeenCalled();
   });
 
@@ -56,6 +68,4 @@ describe('getCreationDateByReleaseTag', () => {
     expect(res.sendStatus).toHaveBeenCalledWith(404);
     expect(res.send).not.toHaveBeenCalled();
   });
-
-  // Add more test cases based on your requirements
 });
