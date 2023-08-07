@@ -13,6 +13,12 @@ Visit https://tag.erikamiguel.com to try out the application.
 
 # API Endpoint
  - Send a GET request to `https://tag.erikamiguel.com/tag/:tagId`
+ - A successful response will have a 200 status code and the response format will be JSON in the below form, where the date is in ISO 8601 format:
+ ```
+ {"created_at":"2021-12-16T16:08:26Z"}
+ ```
+   - An unsuccessful response will return a 404 response code and **Not Found** in the HTML body
+
 
 # Build
 This repo uses Github Actions to run the build and test the containerized environment.
