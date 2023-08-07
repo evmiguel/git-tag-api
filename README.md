@@ -11,7 +11,7 @@ Visit https://tag.erikamiguel.com to try out the application.
  - Run `npm run --workspace=app start` in another terminal to start the webapp
 
 # API Endpoint
- - Send a GET request to `http://tag.erikamiguel:3000/tag/:tagId`
+ - Send a GET request to `https://tag.erikamiguel.com/tag/:tagId`
 
 # Build
 This repo uses Github Actions to run the build and test the containerized environment.

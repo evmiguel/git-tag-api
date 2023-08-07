@@ -3,3 +3,4 @@ node_modules
 app/dist
 
 infrastructure/terraform/.terraform/*
+certs
